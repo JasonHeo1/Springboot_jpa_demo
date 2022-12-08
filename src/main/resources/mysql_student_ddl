@@ -1,0 +1,39 @@
+-- testdb.student definition
+
+CREATE TABLE `student` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `gender` varchar(100) NOT NULL,
+  `age` int NOT NULL,
+  `birth_of_place` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+
+INSERT INTO testdb.student
+(id, name, gender, age, birth_of_place)
+VALUES(1, 'json', 'male', 22, 'seoul');
+INSERT INTO testdb.student
+(id, name, gender, age, birth_of_place)
+VALUES(2, 'Lila', 'male', 32, 'beijing');
+INSERT INTO testdb.student
+(id, name, gender, age, birth_of_place)
+VALUES(3, 'wang', 'female', 21, 'beijing');
+
+======================================================================
+
+Postman:
+{{url}} : Environment - http://127.0.0.1:8080
+
+GET - {{url}}/api/getAllStudents
+
+POST - {{url}}/api/addStudent
+Body - JSON Data:
+{
+    "name":"wang",
+    "age":21,
+    "gender":"female",
+    "birthOfPlace":"beijing"
+}
