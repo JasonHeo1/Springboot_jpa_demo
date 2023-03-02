@@ -1,6 +1,7 @@
 package com.springboot_jpa.demo.service;
 
 import com.springboot_jpa.demo.domain.Student;
+import com.springboot_jpa.demo.domain.StudentSecond;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public interface StudentService {
     void deleteById(Long id);
 
     Student save(Student student);
+
+    StudentSecond save(StudentSecond studentSecond);
 
 
 }

@@ -1,15 +1,18 @@
 package com.springboot_jpa.demo.controller;
 
-import com.springboot_jpa.demo.domain.Student;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
+import com.springboot_jpa.demo.domain.*;
 import com.springboot_jpa.demo.service.StudentService;
-import org.apache.tomcat.util.bcel.Const;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +28,7 @@ public class StudentController {
     StudentService studentService;
 
     @GetMapping("/getAllStudents")
-    public ResponseEntity<List<Student>> getAllStudents(){
+    public ResponseEntity<List<StudentResp>> getAllStudents(){
 
         try{
             List<Student> studentList = new ArrayList<>();
@@ -36,7 +39,23 @@ public class StudentController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
-            return new ResponseEntity<>(studentList, HttpStatus.OK);
+            List<StudentResp> studentResps = new ArrayList<>();
+
+            StudentResp studentResp;
+
+            for (Student student : studentList){
+                studentResp = new StudentResp();
+                BeanUtils.copyProperties(student, studentResp);
+                if(student.getWords() != null){
+                    JSONObject jsonObject = JSONObject.parse(student.getWords());
+                    studentResp.setKoWords(Arrays.asList(StringUtils.split(jsonObject.getString("ko"), ",")));
+                    studentResp.setCnWords(Arrays.asList(StringUtils.split(jsonObject.getString("cn"), ",")));
+                    studentResp.setEnWords(Arrays.asList(StringUtils.split(jsonObject.getString("en"), ",")));
+                }
+                studentResps.add(studentResp);
+            }
+
+            return new ResponseEntity<>(studentResps, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -67,11 +86,38 @@ public class StudentController {
     }
 
     @PostMapping("/addStudent")
-    public ResponseEntity<Student> addStudent(@RequestBody Student student){
+    public ResponseEntity<Student> addStudent(@RequestBody StudentReq studentReq){
 
         try {
+
+            Student student = new Student();
+
+            String jsonData = JSONObject.toJSONString(studentReq.getWords());
+
+            BeanUtils.copyProperties(studentReq, student);
+            student.setWords(jsonData);
+//            student.setWords(studentReq.getWords().toString());
+
             Student savedData = studentService.save(student);
             return new ResponseEntity<>(savedData, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/addStudentSecond")
+    public ResponseEntity<StudentSecond> addStudent(@RequestBody StudentReqSecond studentReqSecond){
+
+        try {
+
+            StudentSecond studentSecond = new StudentSecond();
+
+            BeanUtils.copyProperties(studentReqSecond, studentSecond);
+            studentSecond.setCnWords((String)studentReqSecond.getCnWords().toString());
+            studentSecond.setKoWords((String)studentReqSecond.getKoWords().toString());
+            studentSecond.setEnWords((String)studentReqSecond.getEnWords().toString());
+            StudentSecond savedSecondData = studentService.save(studentSecond);
+            return new ResponseEntity<>(savedSecondData, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

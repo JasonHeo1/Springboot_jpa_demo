@@ -1,7 +1,9 @@
 package com.springboot_jpa.demo.service;
 
 import com.springboot_jpa.demo.domain.Student;
+import com.springboot_jpa.demo.domain.StudentSecond;
 import com.springboot_jpa.demo.repository.StudentRepository;
+import com.springboot_jpa.demo.repository.StudentSecondRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ public class StudentServiceImpl implements StudentService{
 
     @Autowired
     StudentRepository studentRepository;
+    @Autowired
+    private StudentSecondRepository studentSecondRepository;
 
     @Override
     public Optional<Student> findById(Long id) {
@@ -38,5 +42,10 @@ public class StudentServiceImpl implements StudentService{
     @Override
     public Student save(Student student) {
         return studentRepository.save(student);
+    }
+
+    @Override
+    public StudentSecond save(StudentSecond studentSecond) {
+        return studentSecondRepository.save(studentSecond);
     }
 }

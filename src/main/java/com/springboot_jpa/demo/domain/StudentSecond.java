@@ -1,15 +1,14 @@
 package com.springboot_jpa.demo.domain;
 
-import com.alibaba.fastjson2.JSONObject;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
-public class Student {
+@Table(name = "Student")
+public class StudentSecond {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,13 +26,19 @@ public class Student {
     @Column(name = "birth_of_place")
     private String birthOfPlace;
 
-    @Column(name = "words")
-    private String words;
+    @Column(name = "cn_words")
+    private String cnWords;
 
-    public Student() {
+    @Column(name = "ko_words")
+    private String koWords;
+
+    @Column(name = "en_words")
+    private String enWords;
+
+    public StudentSecond() {
     }
 
-    public Student(long id, String name, String gender, Integer age, String birthOfPlace) {
+    public StudentSecond(long id, String name, String gender, Integer age, String birthOfPlace) {
         this.id = id;
         this.name = name;
         this.gender = gender;
