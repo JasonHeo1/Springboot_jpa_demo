@@ -1,6 +1,6 @@
 package com.springboot_jpa.demo.repository;
 
-import com.springboot_jpa.demo.domain.Student;
+import com.springboot_jpa.demo.domain.Synonym;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface SynonymRepository extends JpaRepository<Synonym, Long> {
 
-    Optional<Student> findById(Long id);
+    Optional<Synonym> findById(Long id);
 
-    Student findByName(String name);
+    Optional<Synonym> findByName(String name);
 
-    List<Student> findAll();
+    List<Synonym> findAll();
 
     void deleteById(Long id);
 

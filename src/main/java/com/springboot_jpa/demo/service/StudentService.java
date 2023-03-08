@@ -17,7 +17,7 @@ public interface StudentService {
 
     void deleteById(Long id);
 
-    Student save(Student student);
+    Student save(Student student) throws Exception;
 
     StudentSecond save(StudentSecond studentSecond);
 

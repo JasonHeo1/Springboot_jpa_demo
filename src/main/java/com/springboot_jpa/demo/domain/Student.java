@@ -4,9 +4,13 @@ import com.alibaba.fastjson2.JSONObject;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
+@DynamicInsert
+@DynamicUpdate
 @Entity
 @Data
 public class Student {
@@ -15,7 +19,7 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @Column(name = "gender")

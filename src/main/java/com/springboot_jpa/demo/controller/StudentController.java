@@ -86,7 +86,7 @@ public class StudentController {
     }
 
     @PostMapping("/addStudent")
-    public ResponseEntity<Student> addStudent(@RequestBody StudentReq studentReq){
+    public ResponseEntity<String> addStudent(@RequestBody StudentReq studentReq){
 
         try {
 
@@ -99,9 +99,10 @@ public class StudentController {
 //            student.setWords(studentReq.getWords().toString());
 
             Student savedData = studentService.save(student);
-            return new ResponseEntity<>(savedData, HttpStatus.OK);
+            return new ResponseEntity<>(null, HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+//            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -120,6 +121,27 @@ public class StudentController {
             return new ResponseEntity<>(savedSecondData, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/updateStudent")
+    public ResponseEntity<String> updateStudent(@RequestBody StudentUpdateReq studentUpdateReqReq){
+
+        try {
+
+            Student student = new Student();
+
+            String jsonData = JSONObject.toJSONString(studentUpdateReqReq.getWords());
+
+            BeanUtils.copyProperties(studentUpdateReqReq, student);
+            student.setWords(jsonData);
+//            student.setWords(studentReq.getWords().toString());
+
+            Student savedData = studentService.save(student);
+            return new ResponseEntity<>("success", HttpStatus.OK);
+        }catch (Exception e){
+//            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
