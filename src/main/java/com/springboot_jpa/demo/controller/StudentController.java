@@ -148,6 +148,7 @@ public class StudentController {
     @DeleteMapping("/deleteById")
     public ResponseEntity<HttpStatus> deleteById(@RequestParam(ID)Long id){
         try{
+            System.out.println("");
             studentService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (Exception e){
